@@ -113,7 +113,7 @@ MUSCLE_BY_NAME = {mp.name: mp for mp in ALL_MUSCLE_PAIRS}
 # import re
 # from collections import defaultdict
 # from typing import Dict, List
-# from au_config import AU_INDEX, AU_NAMES  # uses canonical AU names you already have
+# from au_canvas.au_config import AU_INDEX, AU_NAMES  # uses canonical AU names you already have
 
 # def _norm(s: str) -> str:
 #     s = s.lower().replace("’", "'")
