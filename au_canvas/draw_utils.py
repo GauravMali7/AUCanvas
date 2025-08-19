@@ -1,3 +1,5 @@
+# Copyright (c) 2025 Awakening AI
+
 # draw_utils.py
 import cv2
 import math
