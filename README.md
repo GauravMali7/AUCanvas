@@ -7,13 +7,11 @@
   <h2>
     Facial Action Unit Detection & Visualization Framework
   </h2>
-  <br/>
 
   <!-- Affiliation -->
   <p>
     Created by Awakening AI
   </p>
-  <br/>
 
   <!-- Logo -->
   <!-- Update the logo path if needed -->
