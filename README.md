@@ -63,6 +63,12 @@ pip install -r requirements.txt
 
 ---
 
+**Downloading Models:**  
+Download the following checkpoints and put them inside the folder './model_weights'. 
+[FAU Detector Onnx](https://drive.google.com/file/d/1UIBcUm4EkgRz5OyZFL59HVaoxI3NNhl9/view?usp=sharing)
+[MediaPipe Facial Landmarker](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task)
+
+
 ## 🎯 Running
 
 Example command for runing a video version FAU detection and visualization:
