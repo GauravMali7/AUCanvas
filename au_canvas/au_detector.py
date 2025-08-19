@@ -1,3 +1,5 @@
+# Copyright (c) 2025 Awakening AI
+
 # au_detector.py
 import os
 import onnx
