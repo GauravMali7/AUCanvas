@@ -1,3 +1,5 @@
+# Copyright (c) 2025 Awakening AI
+
 # paint_config.py
 from typing import NamedTuple, Sequence, Tuple, Optional
 
