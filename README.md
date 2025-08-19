@@ -24,7 +24,7 @@
 
 
 ## 📸 Showcase
-
+### Example running on a RTX 3090 GPU (Avg. FPS>50):
 <table border="0" style="width: 100%; text-align: left; margin-top: 20px;">
 <!--   <tr> -->
       <td>
