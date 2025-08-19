@@ -98,6 +98,14 @@ sh run_video_viewer.sh
 ```
 
 ---
+## ⚡ Inference Speed
+| Device           | Speed    |
+| ---------------- | -------- |
+| **RTX 3090 GPU** | > 50 FPS |
+| **CPU only**     | > 5 FPS  |
+
+
+---
 
 ## 🧪 Customized Inference
 
