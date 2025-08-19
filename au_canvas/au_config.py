@@ -1,3 +1,5 @@
+# Copyright (c) 2025 Awakening AI
+
 # au_config.py
 # AU indices, names, thresholds and which AUs to display
 
