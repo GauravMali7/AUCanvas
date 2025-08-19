@@ -4,8 +4,9 @@
 import os, time, argparse, threading, queue, cv2, numpy as np
 import csv
 from dataclasses import dataclass
-from au_detector import AUDetector
-from draw_utils import draw_full_overlay
+from src.au_detector import AUDetector
+from src.draw_utils import draw_full_overlay
+
 # Optional MediaPipe
 try:
     import mediapipe as mp
@@ -175,7 +176,7 @@ def main():
 
     print("[INFO] Controls: SPACE=play/pause | ←/→ step | Drag seek | q quit")
 
-    from au_config import INDEX_LIST, THRESHOLDS, AU_INDEX
+    from src.au_config import INDEX_LIST, THRESHOLDS, AU_INDEX
 
     # Map index -> threshold and (index, code) pairs for header
     thr_map = {idx: thr for idx, thr in zip(INDEX_LIST, THRESHOLDS)}
