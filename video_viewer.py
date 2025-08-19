@@ -1,4 +1,6 @@
-# viewer.py
+# Copyright (c) 2025 Awakening AI
+
+# video_viewer.py
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os, time, argparse, threading, queue, cv2, numpy as np
