@@ -17,7 +17,7 @@
 
   <!-- Logo -->
   <!-- Update the logo path if needed -->
-  <img src="docs/aucanvas-logo.png" alt="AUCanvas Logo" width="300"/>
+  <img src="docs/au-canvas-logo.png" alt="AUCanvas Logo" width="300"/>
   <br/><br/>
 
 </div>
