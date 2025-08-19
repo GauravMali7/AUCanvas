@@ -22,6 +22,17 @@
 
 </div>
 
+
+## 📸 Showcase
+
+<table border="0" style="width: 100%; text-align: left; margin-top: 20px;">
+<!--   <tr> -->
+      <td>
+          <video src="https://github.com/user-attachments/assets/4cc05271-1758-4949-be40-fb6afe3274ed" width="100%" controls autoplay loop></video>
+      </td>
+<!--   </tr> -->
+</table>
+
 ---
 
 ## 📢 News
