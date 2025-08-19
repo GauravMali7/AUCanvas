@@ -3,10 +3,10 @@ import cv2
 import math
 import numpy as np
 from typing import Sequence, Optional
-from paint_config import ALL_MUSCLE_PAIRS
-from au_config import INDEX_LIST, THRESHOLDS, AU_INDEX, AU_NAMES
-from paint_config import ALL_MUSCLE_PAIRS, AU_TO_MUSCLES, MUSCLE_BY_NAME
-from au_config import INDEX_LIST, THRESHOLDS, AU_INDEX, AU_NAMES, CODE_TO_IDX, THRESH_BY_CODE
+from au_canvas.paint_config import ALL_MUSCLE_PAIRS
+from au_canvas.au_config import INDEX_LIST, THRESHOLDS, AU_INDEX, AU_NAMES
+from au_canvas.paint_config import ALL_MUSCLE_PAIRS, AU_TO_MUSCLES, MUSCLE_BY_NAME
+from au_canvas.au_config import INDEX_LIST, THRESHOLDS, AU_INDEX, AU_NAMES, CODE_TO_IDX, THRESH_BY_CODE
 
 # ---------- geometry helpers ----------
 def _to_pts(face_norm_landmarks, idxs, w, h):
