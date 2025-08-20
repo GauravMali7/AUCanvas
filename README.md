@@ -55,22 +55,6 @@
 
 ---
 
-## 🛠️ Installation
-
-**Requirements:**  
-- Python ≥ 3.10  
-- CUDA (for GPU inference)  
-
-```bash
-# Create environment
-conda create -n au-canvas python=3.10
-conda activate au-canvas
-
-# Install dependencies
-pip install -r requirements.txt
-````
-
-
 
 Got it — you want an installation guide that works both for **GPU machines** (Linux/Windows with CUDA) and **non-GPU machines** (CPU only, including macOS). The key is that `onnxruntime_gpu` only works with CUDA, while `onnxruntime` is the CPU build and runs everywhere.
 
