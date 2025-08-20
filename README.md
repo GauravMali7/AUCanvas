@@ -27,6 +27,7 @@
 <!--   <tr> -->
 <!--       <td> -->
           <video src="https://github.com/user-attachments/assets/69737b41-f215-4b69-9c10-08ae26ba5dc3" width="100%" controls autoplay loop></video>
+          <video src="https://github.com/user-attachments/assets/7a672e51-5a0a-4730-b02e-e5015570ba1b" width="100%" controls autoplay loop></video>
 <!--       </td> -->
 <!--       <td> -->
           <video src="https://github.com/user-attachments/assets/4cc05271-1758-4949-be40-fb6afe3274ed" width="100%" controls autoplay loop></video>
