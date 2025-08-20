@@ -25,9 +25,12 @@
 ### Example running on a RTX 3090 GPU (Avg. FPS>50):
 <table border="0" style="width: 100%; text-align: left; margin-top: 20px;">
 <!--   <tr> -->
-      <td>
+<!--       <td> -->
+          <video src="https://github.com/user-attachments/assets/69737b41-f215-4b69-9c10-08ae26ba5dc3" width="100%" controls autoplay loop></video>
+<!--       </td> -->
+<!--       <td> -->
           <video src="https://github.com/user-attachments/assets/4cc05271-1758-4949-be40-fb6afe3274ed" width="100%" controls autoplay loop></video>
-      </td>
+<!--       </td> -->
 <!--   </tr> -->
 </table>
 
