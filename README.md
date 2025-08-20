@@ -55,13 +55,6 @@
 
 ---
 
-
-Got it — you want an installation guide that works both for **GPU machines** (Linux/Windows with CUDA) and **non-GPU machines** (CPU only, including macOS). The key is that `onnxruntime_gpu` only works with CUDA, while `onnxruntime` is the CPU build and runs everywhere.
-
-Here’s how you can re-write your installation instructions:
-
----
-
 ## 🛠️ Installation
 
 **Requirements:**
