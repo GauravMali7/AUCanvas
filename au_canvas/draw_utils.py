@@ -163,138 +163,108 @@ def draw_muscle_patch(
     return out
 
 # ---------- AU sidebar / outer box ----------
-def _draw_bar(img, x, y, w, h, p, thr):
+def _draw_bar(img, x, y, w, h, p, thr, border_th=2, tick_th=2):
     p = float(max(0.0, min(1.0, p)))
     thr = float(max(0.0, min(1.0, thr)))
     # background + border
     cv2.rectangle(img, (x, y), (x+w, y+h), (36,36,36), -1)
-    cv2.rectangle(img, (x, y), (x+w, y+h), (95,95,95), 2, cv2.LINE_AA)
+    cv2.rectangle(img, (x, y), (x+w, y+h), (95,95,95), max(1, border_th), cv2.LINE_AA)
     # value fill
     fw = int(round((w-4) * p))
-    if p < thr:
-        color =  (70,200,90)
-    else:
-        color =  (0,0,255)
+    color = (70,200,90) if p < thr else (0,0,255)
     if fw > 0:
         cv2.rectangle(img, (x+2, y+2), (x+2+fw, y+h-2), color, -1)
     # threshold tick
     tx = x + int(round(w * thr))
-    cv2.line(img, (tx, y-1), (tx, y+h+1), (0,0,255), 2, cv2.LINE_AA)
+    cv2.line(img, (tx, y-1), (tx, y+h+1), (0,0,255), max(1, tick_th), cv2.LINE_AA)
+
 
 def make_info_panel(
     h, w=520, *,
     au_probs=None, playback_fps=0.0, infer_fps=0.0,
     frame_idx=0, total_frames=0, run_time_s=0.0,
-    cols=2
+    cols=2, base_h=1024
 ):
-    """Wider, clearer panel with two-column AU bars and a controls box."""
-    panel = np.full((h, w, 3), (24,24,24), dtype=np.uint8)  # dark sidebar
+    s = max(0.4, min(3.0, float(h) / float(base_h)))
+    def si(val): return max(1, int(round(val * s)))
+    def fscale(val): return max(0.3, float(val) * s)
 
-    pad = 16
-    y = pad + 6
+    panel = np.full((h, w, 3), (24,24,24), dtype=np.uint8)
+
+    pad = si(16)
+    y = pad + si(6)
     font = cv2.FONT_HERSHEY_SIMPLEX
 
     def put(txt, color=(235,235,235), scale=0.7, th=2, dy=26):
         nonlocal y
-        cv2.putText(panel, txt, (pad, y), font, scale, color, th, cv2.LINE_AA)
-        y += dy
+        cv2.putText(panel, txt, (pad, y), font, fscale(scale), color, si(th), cv2.LINE_AA)
+        y += si(dy)
 
     # Header
-    y += 10
-    cv2.putText(panel, "AU Video Viewer", (pad, y), font, 1.0, (255,255,255), 2, cv2.LINE_AA)
-    y += 34
+    y += si(10)
+    cv2.putText(panel, "AU Video Viewer", (pad, y), font, fscale(1.0), (255,255,255), si(2), cv2.LINE_AA)
+    y += si(34)
 
-    # Stats row
-    put(f"Frame: {frame_idx}/{max(0,total_frames-1)}", scale=0.62, th=2, dy=34)
+    # Stats row (clean frame text for unknown total)
+    if total_frames and total_frames > 0:
+        put(f"Frame: {frame_idx}/{max(0,total_frames-1)}", scale=0.62, th=2, dy=34)
+    else:
+        put(f"Frame: {frame_idx}", scale=0.62, th=2, dy=34)
+
     put(f"Run time: {run_time_s:.2f}s",               scale=0.62, th=2, dy=34)
     put(f"Playback FPS: {playback_fps:.2f}",          scale=0.62, th=2, dy=34)
     put(f"Infer FPS: {infer_fps:.2f}",                scale=0.62, th=2, dy=34)
 
     # divider
-    cv2.line(panel, (pad, y), (w-pad, y), (80,80,80), 1, cv2.LINE_AA)
-    y += 10
+    cv2.line(panel, (pad, y), (w-pad, y), (80,80,80), si(1), cv2.LINE_AA)
+    y += si(10)
 
-    # AU section
+    # AU section unchanged...
     if au_probs is not None:
-        # Legend
-        cv2.putText(panel, "AUs (green=prob, red=activated)", (pad, y+20), font, 1, (210,210,210), 2, cv2.LINE_AA)
-        y += 50
-
-        # layout
+        cv2.putText(panel, "AUs (green=prob, red=activated)", (pad, y+si(20)), font, fscale(1.0), (210,210,210), si(2), cv2.LINE_AA)
+        y += si(50)
         col_count = max(1, int(cols))
         col_w = (w - 2*pad) / col_count
-        label_w = 340  # space for "AUxx Name"
-        bar_gap = 10
-        bar_h = 16
-        row_h = 40
+        label_w = int(max(100, min(col_w * 0.60, col_w - si(80))))
+        bar_gap = si(10)
+        bar_h = si(16)
+        (txt_w, txt_h), _ = cv2.getTextSize("AU12 Lip Corner Puller", font, fscale(0.7), si(2))
+        row_h = max(si(32), txt_h + si(18))
+        rows_per_col = int(math.ceil(len(INDEX_LIST) / float(col_count)))
 
-        rows_per_col = math.ceil(len(INDEX_LIST) / col_count)
-
-        # draw entries by column
         for i, (idx, thr) in enumerate(zip(INDEX_LIST, THRESHOLDS)):
             col = i // rows_per_col
             row = i % rows_per_col
             col_x = int(pad + col * col_w)
             yy = int(y + row * row_h)
 
-            # label
             code = AU_INDEX[idx] if idx < len(AU_INDEX) else str(idx)
             name = AU_NAMES[idx] if idx < len(AU_NAMES) else f"AU{code}"
             label = f"AU{code} {name}"
-            if au_probs[idx]<thr:
-                color = (220,220,220)
-            else:
-                color = (0,0,255)
-            cv2.putText(panel, label, (col_x, yy + bar_h - 2), font, 0.7, color, 2, cv2.LINE_AA)
+            color = (0,0,255) if au_probs[idx] >= thr else (220,220,220)
+            cv2.putText(panel, label, (col_x, yy + bar_h - si(2)), font, fscale(0.7), color, si(2), cv2.LINE_AA)
 
-            # bar
             bx = col_x + label_w
             bw = int(col_w - label_w - bar_gap)
-            _draw_bar(panel, bx, yy - 2, bw, bar_h, float(au_probs[idx]), thr)
-
-        # advance y to bottom of AU section
-        used_rows = min(rows_per_col, len(INDEX_LIST))
-        y = int(y + used_rows * row_h + 8)
-
-    # Controls box at bottom
-    # compute starting y so it sits above the bottom padding
-    # controls = [
-    #     "Controls",
-    #     "SPACE  : Play/Pause",
-    #     "← / →  : Step frame",
-    #     "Drag Seek bar",
-    #     "Q      : Quit"
-    # ]
-    # # Reserve ~ (len*22 + header extra)
-    # needed = 24 + (len(controls)-1)*22 + 12
-    # y_ctrl = max(y + 6, h - needed)
-    # # box background
-    # cv2.rectangle(panel, (pad-4, y_ctrl-22), (w-pad+4, h-pad), (30,30,30), -1)
-    # cv2.rectangle(panel, (pad-4, y_ctrl-22), (w-pad+4, h-pad), (80,80,80), 1, cv2.LINE_AA)
-
-    # # header
-    # cv2.putText(panel, controls[0], (pad, y_ctrl), font, 0.7, (255,255,255), 2, cv2.LINE_AA)
-    # yy = y_ctrl + 26
-    # for line in controls[1:]:
-    #     cv2.putText(panel, line, (pad, yy), font, 0.56, (220,220,220), 1, cv2.LINE_AA)
-    #     yy += 22
+            _draw_bar(panel, bx, yy - si(2), bw, bar_h, float(au_probs[idx]), thr,
+                      border_th=si(2), tick_th=si(2))
 
     return panel
 
+
 def draw_full_overlay(frame_bgr, au_probs, faces_norm_landmarks, *,
                       playback_fps, infer_fps, frame_idx, total_frames, run_time_s,
-                      panel_w=520, au_cols=2):
+                      panel_w=520, au_cols=2, auto_scale_panel=True, base_h=1024):
     h, w = frame_bgr.shape[:2]
     overlay = frame_bgr.copy()
 
-    # muscles (if landmarks available)
     if faces_norm_landmarks:
         active_names = compute_active_muscle_names(au_probs)
         if active_names:
             for face in faces_norm_landmarks:
                 for mpair in ALL_MUSCLE_PAIRS:
                     if mpair.name not in active_names:
-                        continue  # skip inactive regions
+                        continue
                     if len(mpair.upper) < 2 or len(mpair.lower) < 2:
                         continue
                     overlay = draw_muscle_patch(
@@ -307,15 +277,20 @@ def draw_full_overlay(frame_bgr, au_probs, faces_norm_landmarks, *,
                         cut_type=mpair.cut_type, cut_feather_px=mpair.cut_feather_px, cut_dilate_px=mpair.cut_dilate_px,
                         cut_use_catmull=mpair.cut_use_catmull, cut_samples_per_seg=mpair.cut_samples_per_seg
                     )
-    # right sidebar (wider + columns)
+
+    if auto_scale_panel:
+        s = max(0.4, min(3.0, float(h) / float(base_h)))
+        eff_panel_w = max(180, int(round(panel_w * s)))
+    else:
+        eff_panel_w = int(panel_w)
+
     panel = make_info_panel(
-        h, panel_w,
+        h, eff_panel_w,
         au_probs=au_probs, playback_fps=playback_fps, infer_fps=infer_fps,
         frame_idx=frame_idx, total_frames=total_frames, run_time_s=run_time_s,
-        cols=au_cols
+        cols=au_cols, base_h=base_h
     )
 
-    # compose side-by-side
     out = np.concatenate([overlay, panel], axis=1)
     return out
 
