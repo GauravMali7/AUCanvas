@@ -109,15 +109,16 @@ Download the following checkpoints and put them inside the folder './model_weigh
 - [MediaPipe Facial Landmarker](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task)
 
 
+  
 ## 🎯 Running
 
-Here’s a handy cheat-sheet of commands to run your program.
+A tidy cheat-sheet of commands to run your program—offline (video file) and online (live camera).
 
 ---
 
 ## Offline (video file)
 
-**1) Display WITH panel (no saving)**
+**1) Display *with* panel (no saving)**
 
 ```bash
 python3 video_viewer.py \
@@ -129,19 +130,18 @@ python3 video_viewer.py \
   --offline_pacing --offline_skip_policy drop
 ```
 
-**) Save OVERLAY WITH panel, display WITHOUT panel**
+**2) Save overlay *with* panel, display *without* panel**
 
 ```bash
 python3 video_viewer.py \
   --video /path/to/video.mp4 \
   --onnx_au model_weights/FAU.onnx \
   --mp_task model_weights/face_landmarker.task \
-  --proc_h 512 \
+  --proc_h 1024 \
   --with_panel_save --save_with_overlay \
   --save_video ./out_overlay_panel.mp4 \
   --csv_out ./out_AUs.csv
 ```
-
 
 ---
 
@@ -149,7 +149,7 @@ python3 video_viewer.py \
 
 > Press **q** to quit the window. Replace `0` with your camera index if needed.
 
-**1) Display WITH panel**
+**1) Display *with* panel (saving raw frames)**
 
 ```bash
 python3 video_viewer.py \
@@ -162,18 +162,17 @@ python3 video_viewer.py \
   --csv_out ./cam_raw_AUs.csv
 ```
 
-**2) Fast path live: NO panel (MP off, light striding)**
+**2) Fast path live: display and save *without* panel (light striding), save overlay**
 
 ```bash
 python3 video_viewer.py \
   --camera 0 \
   --onnx_au model_weights/FAU.onnx \
-  --disable_mp \
-  --proc_h 1024 \
-  --infer_stride 2 \
-  --ui_stride 2 \
-  --live_mp_stride 3 \
-  --save_video ./cam_raw.mp4 \
+  --mp_task model_weights/face_landmarker.task \
+  --proc_h 512 \
+  --infer_stride 2 --ui_stride 2 --live_mp_stride 3 \
+  --save_with_overlay \
+  --save_video ./cam_overlay_panel.mp4 \
   --csv_out ./cam_raw_AUs.csv
 ```
 
@@ -181,17 +180,18 @@ python3 video_viewer.py \
 
 ### Flag quick reference
 
-* `--with_panel_display` / `--with_panel_save`: show/save the right info panel.
-* `--save_with_overlay`: save whatever is drawn (panel and/or muscles). Omit to save raw frames.
-* `--proc_h 512`: process & draw at height 512 (keeps aspect).
-* `--infer_stride N`: run AU model every N frames (reuse last probs between).
-* `--ui_stride N`: rebuild visualization every N frames.
-* `--disable_mp` / `--live_mp_stride N`: turn off or stride MediaPipe landmarks.
-* `--offline_pacing --offline_skip_policy drop`: smooth offline playback and drop backlog to keep up.
-* `--fast_writer`: MJPG codec (faster writes, larger files).
-* `--csv_out path.csv`: AU log file.
-* `--save_video path`: output video file.
-* `--start seconds`: start time for offline video.
+* `--with_panel_display` / `--with_panel_save` — show/save the right info panel.
+* `--save_with_overlay` — save whatever is drawn (panel and/or muscles). Omit to save raw frames.
+* `--proc_h 512` — process & draw at height 512 (keeps aspect).
+* `--infer_stride N` — run AU model every N frames (reuse last probs between).
+* `--ui_stride N` — rebuild visualization every N frames.
+* `--disable_mp` / `--live_mp_stride N` — turn off or stride MediaPipe landmarks.
+* `--offline_pacing --offline_skip_policy drop` — smooth offline playback and drop backlog to keep up.
+* `--fast_writer` — MJPG codec (faster writes, larger files).
+* `--csv_out path.csv` — AU log file.
+* `--save_video path` — output video file.
+* `--start seconds` — start time for offline video.
+
 
 
 ---
