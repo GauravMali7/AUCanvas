@@ -70,6 +70,58 @@ conda activate au-canvas
 pip install -r requirements.txt
 ````
 
+
+
+Got it — you want an installation guide that works both for **GPU machines** (Linux/Windows with CUDA) and **non-GPU machines** (CPU only, including macOS). The key is that `onnxruntime_gpu` only works with CUDA, while `onnxruntime` is the CPU build and runs everywhere.
+
+Here’s how you can re-write your installation instructions:
+
+---
+
+## 🛠️ Installation
+
+**Requirements:**
+
+* Python ≥ 3.10
+* (Optional) CUDA 12.x + cuDNN 9.x for GPU inference
+
+### 1. Create Environment
+
+```bash
+conda create -n au-canvas python=3.10
+conda activate au-canvas
+```
+
+### 2. Install Dependencies
+
+#### 📌 Option A: GPU (Linux/Windows with CUDA)
+
+If you have a supported NVIDIA GPU and CUDA 12.x installed:
+
+```bash
+pip install mediapipe==0.10.14 \
+    numpy==1.22.0 \
+    onnx==1.17.0 \
+    onnxruntime-gpu==1.22.0 \
+    opencv-contrib-python==4.10.0.84 \
+    opencv-python==4.10.0.84 \
+    opencv-python-headless==4.10.0.84
+```
+
+#### 📌 Option B: CPU-only (Linux/macOS/Windows without CUDA)
+
+For machines without GPU or on macOS:
+
+```bash
+pip install mediapipe==0.10.14 \
+    numpy==1.22.0 \
+    onnx==1.17.0 \
+    onnxruntime==1.22.0 \
+    opencv-contrib-python==4.10.0.84 \
+    opencv-python==4.10.0.84 \
+    opencv-python-headless==4.10.0.84
+```
+
 ---
 
 **Downloading Models:**  
